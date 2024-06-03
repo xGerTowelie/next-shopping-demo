@@ -18,6 +18,9 @@ async function main() {
         posts: (createMany) => createMany(10),
     }))
 
+    // Seed the database with 10 products
+    await seed.product((createMany) => createMany(10))
+
     console.log("Database seeded successfully!");
 
     process.exit();
