@@ -17,14 +17,29 @@ async function main() {
     // Truncate all tables in the database
     await seed.$resetDatabase();
 
+    // First, we create a pool of 5 tags to associate with posts
+    const { category } = await seed.category((x) => x(categoriesCount, (ctx) => {
+        return {
+            name: `Category #${ctx.index}`,
+            description: `Category description #${ctx.index}`,
+        }
+    }))
 
-    await seed.product((x) => x(productsCount, (ctx) => ({
-        name: `Product #${ctx.index}`,
-        description: `Product description #${ctx.index}`,
-        price: Math.floor(Math.random() * (maxPrice - minPrice) + minPrice),
-        image: `https://picsum.photos/200/300?random=${ctx.index}`,
-        categories: (x) => x({ min: 1, max: 5 })
-    })))
+    // We create 5 users
+    await seed.product(
+        (x) => x(productsCount, (ctx) => {
+            return {
+                name: `Product #${ctx.index}`,
+                description: `Product description #${ctx.index}`,
+                price: Math.floor(Math.random() * (maxPrice - minPrice) + minPrice),
+                image: `https://picsum.photos/200/300?random=${ctx.index}`,
+                categories: (x) => x({ min: 0, max: 5 })
+            }
+        }),
+        {
+            // We provide our pool of tags for the PostTags relationship to choose from
+            connect: { category }
+        })
 
 
     process.exit();
