@@ -2,20 +2,29 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "seed": "npx tsx prisma/seed/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
+    "migrate": "prisma migrate dev",
+    "postmigrate": "npx @snaplet/seed sync",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "tailwindcss": "npx tailwindcss build src/styles/globals.css -o dist/tailwind.css --watch"
   },
   "dependencies": {
+    "@prisma/client": "^5.14.0",
     "autoprefixer": "^10.4.19",
     "next": "14.2.3",
+    "prisma": "^5.14.0",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@snaplet/copycat": "^5.0.0",
+    "@snaplet/seed": "^0.97.20",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -24,6 +33,7 @@
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
